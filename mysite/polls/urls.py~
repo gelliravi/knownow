@@ -1,0 +1,10 @@
+from django.conf.urls import patterns, url
+
+from knownow import views
+
+urlpatterns = patterns('',
+    # ex: /knownow/
+    url(r'^$', views.index, name='index'),
+    # ex: /knownow/5/
+    url(r'^(?P<knowledge_id>\d+)/$', views.detail, name='detail'),
+)

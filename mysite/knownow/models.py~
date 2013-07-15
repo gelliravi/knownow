@@ -1,0 +1,37 @@
+from django.db import models
+
+class Knowledge(models.Model):
+    referalKnowledge = models.ForeignKey('self', null=True, blank=True, default=None)
+    content = models.CharField(max_length=200)
+    pub_date = models.DateTimeField('date published')
+    def __unicode__(self):
+        return self.content
+    def was_published_recently(self):
+        return self.pub_date >= timezone.now() - datetime.timedelta(days=1)
+
+
+from neo4django.db import models
+
+class Person(models.NodeModel):
+    name = models.StringProperty()
+
+class Knowledge(models.NodeModel):
+    content = models.StringProperty()
+    date = models.IntegerProperty()
+    referalKnowledge = models.Relationship('self',rel_type='refer_to')
+    provider = models.Relationship('Person',rel_type='has_provided')
+
+class OnlinePerson(Person):
+    email = models.EmailProperty()
+    homepage = models.URLProperty()
+
+class EmployedPerson(Person):
+    job_title = models.StringProperty(indexed=True)
+
+class Pet(models.NodeModel):
+    owner = models.Relationship(Person,
+                                rel_type='owns',
+                                single=True,
+                                related_name='pets'
+                               )
+

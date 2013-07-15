@@ -1,0 +1,15 @@
+{% if person_list %}
+    <ul>
+    {% for person in person_list %}
+        <li>{{ person.name }}
+        </li>
+    {% endfor %}
+    </ul>
+{% else %}
+    <p>No person is available.</p>
+{% endif %}
+<form action="{% url 'graphsocial:createFromScratch' %}" method="post">
+{% csrf_token %}
+<input type="text" name="name" id="content1" value="Type your name here" />
+<input type="submit" value="Provide" />
+</form>
